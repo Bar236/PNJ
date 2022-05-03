@@ -1,0 +1,51 @@
+#navbarMain{
+    background-color: indigo !important;
+}
+#btnSearch{
+    color: yellow;
+    outline-style: outset;
+}
+#btnSearch:hover{
+color: indigo;
+background-color: yellow;
+}
+#login{
+    margin-top: 20%;
+    margin-left: 35%;
+    margin-right: 35%;
+    width: 30%;
+}
+#test{
+    /* background-color: aquamarine; */
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;
+}
+#carte{
+    margin: auto;
+    margin-bottom: 2.5%;
+    margin-top: 2.5%;
+}
+#pp{
+    border: 2px solid rgb(0, 0, 0);
+}
+#info{
+    float: right;
+}
+#topique{
+    margin-top: 3%;
+    margin-right: 3%;
+}
+.imgP{
+    height: 50px;
+    border-radius: 50%;
+    float: right;
+}
+.form-control{
+    margin-bottom: 2.5% !important;
+    margin-top: 2.5% !important;
+    
+}
+.creer{
+    margin-top: 10% !important;
+}
