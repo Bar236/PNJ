@@ -5,7 +5,7 @@ define("DBNAME", "db_PNJ");
 define("DBUSER", "TPI_USER");
 define("DBPWD", "Finish_him");
 
-function connectDB()
+function connexionBDD()
 {
     static $dbc = null;
 
