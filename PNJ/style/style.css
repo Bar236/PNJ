@@ -65,3 +65,16 @@ background-color: yellow;
 .imageJeu{
     max-width: 500px;
 }
+#menu{
+    /* margin-left: 20%; */
+    padding-left: 20%;
+    width: 100%;
+
+}
+#menuLogo{
+    height: 70%;
+    width: 70%;
+}
+#navLogo{
+    max-height: 30px;
+}

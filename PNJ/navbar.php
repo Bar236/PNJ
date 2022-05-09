@@ -5,7 +5,9 @@ if (empty($_SESSION)) {
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-light" id="navbarMain">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.php">PNJ</a>
+        <a class="navbar-brand" href="index.php">
+            <img src="./image/logoPNJ.png" id="navLogo" alt="PNJ">
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -17,7 +19,7 @@ if (empty($_SESSION)) {
                 <?php
                 if (isset($_SESSION["nomLog"])) {
                     echo '<li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="index.php">Jeux</a>
+                    <a class="nav-link active" aria-current="page" href="rechercheJeux.php">Jeux</a>
                     </li>';
                 }
                 if ($_SESSION["statutLog"] == "6") {

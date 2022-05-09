@@ -46,11 +46,14 @@ function attribuerMoyenne($moyenne, $nomJeu)
     }
     return $reponse;
 }
-function attribuerNote($note,$nomJeu){
+
+function ajouterNote($note,$pseudo,$titre){
     static $ps = null;
-    $statut = 1;
-    $sql = 'INSERT INTO JEU (titre,dateSorite,editeur,description,public,idCategorie,imageJeu)';
-    $sql .= 'VALUES (:TITRE,:DATE,:EDITEUR,:DESCRIPTION,:PUBLIC,:IDCATEGORIE,:IMAGE)';
+    $sql = "INSERT INTO NOTE (note,idUtilisateur,idJeu) ";
+    $sql .= "SELECT :NOTE ,u.idUtilisateur ,j.idJeu ";
+    $sql .="FROM JEU j, UTILISATEUR u ";
+    $sql .="WHERE u.pseudo =:PSEUDO ";
+    $sql .="AND j.titre =:TITRE ";
 
     if ($ps == null) {
         $ps = connexionBDD()->prepare($sql);
@@ -58,18 +61,12 @@ function attribuerNote($note,$nomJeu){
     $reponse = false;
 
     try {
+        $ps->bindParam(":NOTE", $note, PDO::PARAM_INT);
         $ps->bindParam(":TITRE", $titre, PDO::PARAM_STR);
-        $ps->bindParam(":DATE", $date, PDO::PARAM_STR);
-        $ps->bindParam(":EDITEUR", $editeur, PDO::PARAM_STR);
-        $ps->bindParam(":DESCRIPTION", $description, PDO::PARAM_STR);
-        $ps->bindParam(":PUBLIC", $public, PDO::PARAM_BOOL);
-        $ps->bindParam(":IDCATEGORIE", $idCategorie, PDO::PARAM_INT);
-        $ps->bindParam(":IMAGE", $photo, PDO::PARAM_STR);
-
+        $ps->bindParam(":PSEUDO",$pseudo,PDO::PARAM_STR);
         $reponse = $ps->execute();
     } catch (PDOException $e) {
         echo ($e->getMessage());
-        $reponse = $e->getMessage();
     }
     return $reponse;
 }

@@ -1,11 +1,12 @@
 <?php
 if (isset($_POST['Creer'])) {
-    $prenom = filter_input(INPUT_POST, "prenom", FILTER_SANITIZE_STRING);
-    $nom = filter_input(INPUT_POST, "nom", FILTER_SANITIZE_STRING);
-    $pseudo = filter_input(INPUT_POST, "pseudo", FILTER_SANITIZE_STRING);
-    $mail = filter_input(INPUT_POST, "mail", FILTER_SANITIZE_EMAIL);
-    $mdp = filter_input(INPUT_POST, "mdp", FILTER_SANITIZE_STRING);
-    $m2p = filter_input(INPUT_POST, "m2p", FILTER_SANITIZE_STRING);
+    $prenom = htmlspecialchars($_POST["prenom"], ENT_NOQUOTES);
+    $nom = filter_input($_POST["nom"], ENT_NOQUOTES);
+    $pseudo = filter_input($_POST["pseudo"], ENT_NOQUOTES);
+    $mail = filter_input($_POST["mail"], ENT_NOQUOTES);
+    $mdp = filter_input($_POST["mdp"], ENT_NOQUOTES);
+    $m2p = filter_input($_POST["m2p"], ENT_NOQUOTES);
+    //$mdp = htmlspecialchars($_POST['mdp'], ENT_NOQUOTES);
 
     if ($mdp == $m2p) {
         $mdp = hash('sha256', $mdp);
@@ -16,7 +17,9 @@ if (isset($_POST['Creer'])) {
         $src = 'data:' . $mime . ';base64,' . base64_encode($data);
 
         require("./fonctionPHP/fonctionUtilisateur.php");
-        creerUtilisateur($pseudo,$mdp,$prenom,$nom,$mail,$src);
+        if(creerUtilisateur($pseudo,$mdp,$prenom,$nom,$mail,$src)==true){
+            header("Location: login.php");
+        }
     }
 }
 ?>

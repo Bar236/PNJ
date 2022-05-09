@@ -1,20 +1,25 @@
 <?php
-if(empty($_SESSION)){
+if (empty($_SESSION)) {
     session_start();
 }
 if (isset($_GET['nomJeu'])) {
     require_once('./fonctionPHP/fonctionJeux.php');
     require_once('./fonctionPHP/fonctionNote.php');
-    $nonJeu = htmlspecialchars($_GET['nomJeu'], ENT_NOQUOTES);
-    $data = infoJeu($nonJeu);
-    //$note=(calculerNoteMoyenne($nonJeu));
-    //attribuerMoyenne($note,$nonJeu);
-    if(isset($_POST['commentaire'])){
+    require_once("./fonctionPHP/fonctionCommentaire.php");
+    $nomJeu = htmlspecialchars($_GET['nomJeu'], ENT_NOQUOTES);
+
+    if (isset($_POST['commentaire'])) {
         $critique = htmlspecialchars($_POST['critique'], ENT_NOQUOTES);
-        require_once("./fonctionPHP/fonctionCommentaire.php");
-        creerCommentaire($_SESSION['nomLog'],$nonJeu,$critique,false);
+        creerCommentaire($_SESSION['nomLog'], $nomJeu, $critique, false);
     }
-}else{
+    if (isset($_POST['note'])) {
+        if (ajouterNote($_POST['note'], $_SESSION['nomLog'], $nomJeu) != false) {
+            $moyenne = calculerNoteMoyenne($nomJeu);
+            attribuerMoyenne($moyenne, $nomJeu);
+        }
+    }
+    $data = infoJeu($nomJeu);
+} else {
     header("Location: index.php");
 }
 ?>
@@ -74,17 +79,39 @@ if (isset($_GET['nomJeu'])) {
                     <!--<button class="btn btn-outline-secondary" type="button">Example button</button>-->
                 </div>
             </div>
+            <div class="col-md-6">
+                <form action="" method="POST">
+                    <input type="number" name="note" id="note" min="0" max="10" value="5">
+                    <button type="submit" name="noteJeu">Noter le jeu</button>
+                </form>
+            </div>
             <form action="#" method="POST">
                 <div class="card">
                     <div class="card-body">
                         <div class="form-floating">
-                           <p>Rédiger votre critique</p>
+                            <p>Rédiger votre critique</p>
                             <textarea class="form-control" name="critique" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
                         </div>
                         <button type="submit" name="commentaire" class="btn btn-primary">Envoyer le commentaire</button>
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="row align-items-md-stretch">
+            <?php
+            $commentaires = infoJeuCommentaire($nomJeu);
+            for ($i = 0; $i < sizeof($commentaires); $i++) {
+
+                echo '<li class="list-group-item" id="topique">
+                <div class="card-body">
+                    <h5>' . $commentaires[$i]["pseudo"] . '</h5>
+                    <h5>' .  explode(' ', $commentaires[$i]["dateCommentaire"])[0] . '</h5>
+                    <img src="' . $commentaires[$i]["photoDeProfil"] . '" alt="" class="imgP">
+                    <p>' . $commentaires[$i]["commentaire"] . '</p>
+                </div>
+            </li>';
+            }
+            ?>
         </div>
 </body>
 

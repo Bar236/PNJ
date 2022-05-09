@@ -1,11 +1,14 @@
 <?php
 require_once(".//fonctionPHP/fonctionUtilisateur.php");
-if (isset($_POST['ban'])) {
-    bannirUtilisateur("SaltyMaster");
+require_once(".//fonctionPHP/fonctionCommentaire.php");
+if (isset($_POST['bannirUtilisateur'])) {
+    bannirUtilisateur($_POST['bannirUtilisateur']);
 } else if (isset($_POST['valider'])) {
     validerUtilisateur($_POST['valider']);
 } else if (isset($_POST['refuser'])) {
     refuseUtilisateur($_POST['refuser']);
+} else if (isset($_POST['validerCom'])) {
+    validerCommentaire($_POST['validerCom']);
 }
 ?>
 <!DOCTYPE html>
@@ -26,23 +29,56 @@ if (isset($_POST['ban'])) {
     include("navbar.php");
     $nonInscrit = infoNonVerifier();
     $toutUtilisateur = infoToutUtilisateur();
+    $toutCommentaire = infoCommentaire();
     ?>
-    <form action="#" name="testBan" method="post">
-        <ul class="list-group">
-            <?php for ($i = 0; $i < sizeof($nonInscrit); $i++) {
-            echo'
+    <div class="container">
+        <div class="row align-items-start">
+            <div class="col">
+                <h2>les non validés</h2>
+                <form action="#" name="testBan" method="post">
+                    <ul class="list-group">
+                        <?php for ($i = 0; $i < sizeof($nonInscrit); $i++) {
+                            echo '
                 <li class="list-group-item">
-                    <button type="submit" value="'.$nonInscrit[$i]["pseudo"].'" name="valider">Valider le compte de '.$nonInscrit[$i]["pseudo"].'</button>
-                    <button type="submit" value="'.$nonInscrit[$i]["pseudo"].'" name="refuser">Refuser le compte de '.$nonInscrit[$i]["pseudo"].'</button>
+                    <button type="submit" value="' . $nonInscrit[$i]["pseudo"] . '" name="valider">Valider le compte de ' . $nonInscrit[$i]["pseudo"] . '</button>
+                    <button type="submit" value="' . $nonInscrit[$i]["pseudo"] . '" name="refuser">Refuser le compte de ' . $nonInscrit[$i]["pseudo"] . '</button>
                 </li>';
-            
-            }
-            ?>
-        </ul>
-    </form>
-    <form action="#" name="testValider" method="post">
-        <!-- <button type="submit" name="ban" value="c'est un test">Bannir SaltyMaster</button>-->
-    </form>
+                        }
+                        ?>
+                    </ul>
+                </form>
+            </div>
+            <div class="col">
+                <h2>tout les utilisateurs</h2>
+                <form action="#" name="testValider" method="post">
+                    <ul class="list-group">
+                        <?php for ($i = 0; $i < sizeof($toutUtilisateur); $i++) {
+                            echo '
+                <li class="list-group-item">
+                    <button type="submit" value="' . $toutUtilisateur[$i]["pseudo"] . '" name="bannirUtilisateur">Bannir le compte de ' . $toutUtilisateur[$i]["pseudo"] . '</button>
+                </li>';
+                        }
+                        ?>
+                    </ul>
+                </form>
+            </div>
+            <div class="col">
+                <h2>critiques non validés</h2>
+                <form action="#" name="testValider" method="post">
+                    <ul class="list-group">
+                        <?php for ($i = 0; $i < sizeof($toutCommentaire); $i++) {
+                            echo '
+                <li class="list-group-item">
+                    <button type="submit" value="' . $toutCommentaire[$i]["idCommentaire"] . '" name="validerCom">Valider le commentaire de ' . $toutCommentaire[$i]["pseudo"] . ' sur ' . $toutCommentaire[$i]["titre"] . '</button>
+                </li>';
+                        }
+                        ?>
+                    </ul>
+                </form>
+            </div>
+        </div>
+
+
 </body>
 
 </html>

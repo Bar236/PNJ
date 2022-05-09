@@ -56,7 +56,7 @@ function connecterUtilisateur($email, $mdp)
                 }
                 $_SESSION['nomLog'] = $reponse[0]["pseudo"];
                 $_SESSION['statutLog'] = $reponse[0]["idStatut"];
-                return true;
+                $reponse= true;
             }
             //le compte existe mais soit il est pas vérifier , banni, refusé ,supprimé
         }

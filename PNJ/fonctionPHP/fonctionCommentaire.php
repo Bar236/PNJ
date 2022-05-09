@@ -28,3 +28,64 @@ function creerCommentaire($pseudo,$nomJeu,$commentaire,$valide){
     }
     return $reponse;
 }
+function infoCommentaire(){
+    static $ps = null;
+    $sql = "SELECT  c.idCommentaire,c.commentaire ,u.pseudo, j.titre  FROM COMMENTAIRE c ,UTILISATEUR u ,JEU j ";
+    $sql .= "WHERE c.idUtilisateur =u.idUtilisateur ";
+    $sql .= "AND c.idJeu =j.idJeu ";
+    $sql .= "AND c.accepte =FALSE ;" ;
+
+    if ($ps == null) {
+        $ps = connexionBDD()->prepare($sql);
+    }
+    $reponse = false;
+
+    try {
+        if ($ps->execute())
+            $reponse = $ps->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    return $reponse;
+}
+function validerCommentaire($idCommentaire){
+    static $ps = null;
+    $sql = "UPDATE COMMENTAIRE SET accepte = true ";
+    $sql .= "WHERE idCommentaire = :IDCOM";
+
+    if ($ps == null) {
+        $ps = connexionBDD()->prepare($sql);
+    }
+    $reponse = false;
+
+    try {
+         $ps->bindParam(":IDCOM", $idCommentaire, PDO::PARAM_INT);
+
+        $reponse = $ps->execute();
+    } catch (PDOException $e) {
+        echo ($e->getMessage());
+    }
+    return $reponse;
+}
+function infoJeuCommentaire($titre){
+    static $ps = null;
+    $sql = "SELECT c.commentaire ,c.dateCommentaire ,u.pseudo ,u.photoDeProfil  FROM COMMENTAIRE c ,UTILISATEUR u,JEU j  ";
+    $sql .= "WHERE c.idUtilisateur  = u.idUtilisateur ";
+    $sql .= "AND c.idJeu =j.idJeu ";
+    $sql .= "AND j.titre =:TITRE ";
+    $sql .= "AND c.accepte =TRUE ;" ;
+
+    if ($ps == null) {
+        $ps = connexionBDD()->prepare($sql);
+    }
+    $reponse = false;
+
+    try {
+        $ps->bindParam(":TITRE",$titre,PDO::PARAM_STR);
+        if ($ps->execute())
+            $reponse = $ps->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    return $reponse;
+}

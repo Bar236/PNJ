@@ -35,8 +35,23 @@
             </div>
             ';
         }
-    }
+    } else {
     ?>
+
+        <div class="container" id="menu">
+            <img src="./image/logoPNJ.png" id="menuLogo" alt="">
+            <div class="row align-items-start">
+
+                <div class="col">
+                    <a href="login.php" class="btn btn-primary btn-lg">Se connecter</a>
+                </div>
+                <div class="col">
+                    <a href="enregistrer.php" class="btn btn-primary btn-lg">Créer un compte</a>
+                </div>
+            </div>
+        <?php
+    }
+        ?>
 </body>
 
 </html>
