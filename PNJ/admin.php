@@ -68,9 +68,13 @@ if (isset($_POST['bannirUtilisateur'])) {
                     <ul class="list-group">
                         <?php for ($i = 0; $i < sizeof($toutCommentaire); $i++) {
                             echo '
+                <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" id="scrollComAdmin" class="scrollspy-example" tabindex="0">
                 <li class="list-group-item">
+                <p>Auteur : '.$toutCommentaire[$i]["pseudo"].'</p>
+                <p>Jeux : '.$toutCommentaire[$i]["titre"].'</p>
+                <p>Commentaire : '.$toutCommentaire[$i]["commentaire"].'</p>
                     <button type="submit" value="' . $toutCommentaire[$i]["idCommentaire"] . '" name="validerCom">Valider le commentaire de ' . $toutCommentaire[$i]["pseudo"] . ' sur ' . $toutCommentaire[$i]["titre"] . '</button>
-                </li>';
+                </li> </div>';
                         }
                         ?>
                     </ul>

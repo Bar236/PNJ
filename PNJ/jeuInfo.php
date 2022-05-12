@@ -8,6 +8,7 @@ if (isset($_GET['nomJeu'])) {
     require_once("./fonctionPHP/fonctionCommentaire.php");
     $nomJeu = htmlspecialchars($_GET['nomJeu'], ENT_NOQUOTES);
 
+
     if (isset($_POST['commentaire'])) {
         $critique = htmlspecialchars($_POST['critique'], ENT_NOQUOTES);
         creerCommentaire($_SESSION['nomLog'], $nomJeu, $critique, false);
@@ -18,10 +19,19 @@ if (isset($_GET['nomJeu'])) {
             attribuerMoyenne($moyenne, $nomJeu);
         }
     }
+    if(isset($_POST["btn_modif"])){
+        $n_critique = htmlspecialchars($_POST['comm_modif'], ENT_NOQUOTES);
+        moddifierCommentaire($n_critique,$_POST["btn_modif"]);
+    }
+    if(isset($_POST["btn_supp"])){
+        supprimerCommentaire($_POST["btn_supp"]);
+    }
+    
     $data = infoJeu($nomJeu);
 } else {
     header("Location: index.php");
 }
+$test = dejaNote($_SESSION['nomLog'], $nomJeu);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,10 +90,16 @@ if (isset($_GET['nomJeu'])) {
                 </div>
             </div>
             <div class="col-md-6">
-                <form action="" method="POST">
-                    <input type="number" name="note" id="note" min="0" max="10" value="5">
-                    <button type="submit" name="noteJeu">Noter le jeu</button>
-                </form>
+                <?php
+                if ($test == true) {
+                ?>
+                    <form action="" method="POST">
+                        <input type="number" name="note" id="note" min="0" max="10" value="5">
+                        <button type="submit" name="noteJeu">Noter le jeu</button>
+                    </form>
+                <?php } else {
+                    echo 'Vous avez déjà attribué une note à ce jeu';
+                } ?>
             </div>
             <form action="#" method="POST">
                 <div class="card">
@@ -95,24 +111,44 @@ if (isset($_GET['nomJeu'])) {
                         <button type="submit" name="commentaire" class="btn btn-primary">Envoyer le commentaire</button>
                     </div>
                 </div>
+                
             </form>
+
         </div>
         <div class="row align-items-md-stretch">
             <?php
             $commentaires = infoJeuCommentaire($nomJeu);
             for ($i = 0; $i < sizeof($commentaires); $i++) {
-
-                echo '<li class="list-group-item" id="topique">
-                <div class="card-body">
-                    <h5>' . $commentaires[$i]["pseudo"] . '</h5>
-                    <h5>' .  explode(' ', $commentaires[$i]["dateCommentaire"])[0] . '</h5>
-                    <img src="' . $commentaires[$i]["photoDeProfil"] . '" alt="" class="imgP">
-                    <p>' . $commentaires[$i]["commentaire"] . '</p>
-                </div>
-            </li>';
+                if ($commentaires[$i]['pseudo'] == $_SESSION['nomLog']) {
+                    echo '<li class="list-group-item" id="topique">
+                    <div class="card-body">
+                        <h5>' . $commentaires[$i]["pseudo"] . '</h5>
+                        <h5>' .  explode(' ', $commentaires[$i]["dateCommentaire"])[0] . '</h5>
+                        <img src="' . $commentaires[$i]["photoDeProfil"] . '" alt="" class="imgP">
+                        <form action="" method="POST">
+                        <input type="hidden" value="'.$commentaires[$i]["commentaire"] .'" id="commValue">
+                            <textarea class="form-control" name="comm_modif" id="comm_modif" id="floatingTextarea" ></textarea> <br>
+                            <button class="btn btn-primary" name="btn_modif" value="'.$commentaires[$i]["idCommentaire"].'" type="submit">Modifier mon commentaire</button>
+                            <button class="btn btn-primary" name="btn_supp" value="'.$commentaires[$i]["idCommentaire"].'" type="submit">Supprimer mon commentaire</button>
+                        </form>
+                    </div>
+                </li>';
+                } else {
+                    echo '<li class="list-group-item" id="topique">
+                    <div class="card-body">
+                        <h5>' . $commentaires[$i]["pseudo"] . '</h5>
+                        <h5>' .  explode(' ', $commentaires[$i]["dateCommentaire"])[0] . '</h5>
+                        <img src="' . $commentaires[$i]["photoDeProfil"] . '" alt="" class="imgP">
+                        <p>' . $commentaires[$i]["commentaire"] . '</p>
+                    </div>
+                </li>';
+                }
             }
             ?>
         </div>
+        <script>
+            document.getElementById("comm_modif").value=document.getElementById("commValue").value
+        </script>
 </body>
 
 </html>

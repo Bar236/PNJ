@@ -21,20 +21,19 @@ if (empty($_SESSION)) {
                     echo '<li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="rechercheJeux.php">Jeux</a>
                     </li>';
+                    echo '<li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="creerJeu.php">Ajouter un jeu</a>
+                         </li>';
                 }
                 if ($_SESSION["statutLog"] == "6") {
                     echo '
-                    <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Administrateur
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="admin.php">Gérer les utilisateurs </a></li>
-                    <li><a class="dropdown-item" href="creerJeu.php">Ajouter un jeu</a></li>
-                    </ul>
+                    <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="admin.php">Gérer les utilisateurs</a>
+                    </li>
                     ';
                 }
                 ?>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <?php //Mon compte
@@ -49,6 +48,9 @@ if (empty($_SESSION)) {
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <?php
                         if (isset($_SESSION["nomLog"])) {
+                            //     echo '<li class="nav-item">
+                            //     <a class="nav-link active" aria-current="page" href="creerJeu.php">Ajouter un jeu</a>
+                            // </li>';
                             echo '<li><a class="dropdown-item" href="pageUtilisateur.php">Mon compte</a></li>';
                             echo '<li>
                         <hr class="dropdown-divider">

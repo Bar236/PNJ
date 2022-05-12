@@ -78,3 +78,22 @@ background-color: yellow;
 #navLogo{
     max-height: 30px;
 }
+#scrollTest{
+    height: 48rem !important;
+    overflow-y: scroll;
+    border: solid !important;
+    
+}
+#scrollComAdmin{
+    height: 10rem !important;
+    overflow-y: scroll;
+    border: solid !important;
+}
+#carteRecherche{
+    margin-left: 5%;
+    margin-top: 2%;
+}
+#imgrecherche{
+    max-height: 200;
+    width: auto;
+}

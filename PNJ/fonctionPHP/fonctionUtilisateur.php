@@ -1,7 +1,17 @@
 <?php
 require_once("./bdd/connexionBdd.php");
 
-//créer un utilisateur avec le statut inscrit
+/**
+ * permet de creer un utilisateur dans la base de données
+ *
+ * @param [string] $pseudo
+ * @param [string] $mdp
+ * @param [string] $prenom
+ * @param [string] $nom
+ * @param [string] $email
+ * @param [tstringype] $photo
+ * @return bool
+ */
 function creerUtilisateur($pseudo, $mdp, $prenom, $nom, $email, $photo)
 {
     static $ps = null;
@@ -29,7 +39,68 @@ function creerUtilisateur($pseudo, $mdp, $prenom, $nom, $email, $photo)
     }
     return $reponse;
 }
+/**
+ * modifie le profile d'un utilisateur
+ *
+ * @param [string] $pseudo
+ * @param [string] $n_pseudo
+ * @param [string] $n_mail
+ * @param [string] $n_mdp
+ * @return bool
+ */
+function modifierUtilisateur($pseudo,$n_pseudo, $n_mail, $n_mdp)
+{
+    static $ps = null;
+    $sql = "UPDATE UTILISATEUR SET ";
+    if ($n_pseudo != "") {
+        $sql .= "pseudo = :NPSEUDO ";
+        if ($n_mail != "") {
+            $sql .= ", email = :EMAIL ";
+        }
+        if ($n_mdp != "") {
+            $sql .= ", motDePasse = :MDP ";
+        }
+    } elseif ($n_mail != "") {
+        $sql .= "email = :EMAIL ";
+        if ($n_mdp != "") {
+            $sql .= ", motDePasse = :MDP ";
+        }
+    } elseif ($n_mdp != "") {
+        $sql .= "motDePasse = :MDP ";
+    }
+    $sql .= "WHERE pseudo = :PSEUDO";
 
+    if ($ps == null) {
+        $ps = connexionBDD()->prepare($sql);
+    }
+    $reponse = false;
+
+    try {
+        $ps->bindParam(":PSEUDO", $pseudo, PDO::PARAM_STR);
+        if ($n_pseudo != "") {$ps->bindParam(":NPSEUDO", $n_pseudo, PDO::PARAM_STR);}
+        if ($n_mail != "") {$ps->bindParam(":EMAIL", $n_mail, PDO::PARAM_STR);}
+        if ($n_mdp != "") {$ps->bindParam(":MDP", $n_mdp, PDO::PARAM_STR);}
+        //$ps->bindParam(":PSEUDO", $pseudo, PDO::PARAM_STR);
+
+        $reponse = $ps->execute();
+        if($reponse==true){
+            if (empty($_SESSION)) {
+                session_start();
+            }
+            $_SESSION['nomLog']=$n_pseudo;
+        }
+    } catch (PDOException $e) {
+        echo ($e->getMessage());
+    }
+    return $reponse;
+}
+/**
+ * vérifie si le mot de passe et l'email de l'utilisateur sont correctes
+ *
+ * @param [string] $email
+ * @param [string] $mdp
+ * @return bool
+ */
 function connecterUtilisateur($email, $mdp)
 {
     static $ps = null;
@@ -38,7 +109,7 @@ function connecterUtilisateur($email, $mdp)
 
     if ($ps == null) {
         $ps = connexionBDD()->prepare($sql);
-        $ps->bindParam(":EMAIL", $email ,PDO::PARAM_STR);
+        $ps->bindParam(":EMAIL", $email, PDO::PARAM_STR);
     }
     $reponse = false;
 
@@ -56,14 +127,21 @@ function connecterUtilisateur($email, $mdp)
                 }
                 $_SESSION['nomLog'] = $reponse[0]["pseudo"];
                 $_SESSION['statutLog'] = $reponse[0]["idStatut"];
-                $reponse= true;
+                $reponse = true;
+            } else {
+                $reponse = false;
             }
             //le compte existe mais soit il est pas vérifier , banni, refusé ,supprimé
         }
     }
     return $reponse;
 }
-// changer le statut d'un utilisateur d'inscrit à accepté
+/**
+ * modifie le statut d'utilisateur à valider
+ *
+ * @param [string] $pseudo
+ * @return void
+ */
 function validerUtilisateur($pseudo)
 {
     static $ps = null;
@@ -76,7 +154,7 @@ function validerUtilisateur($pseudo)
     $reponse = false;
 
     try {
-         $ps->bindParam(":PSEUDO", $pseudo, PDO::PARAM_STR);
+        $ps->bindParam(":PSEUDO", $pseudo, PDO::PARAM_STR);
 
         $reponse = $ps->execute();
     } catch (PDOException $e) {
@@ -84,7 +162,12 @@ function validerUtilisateur($pseudo)
     }
     return $reponse;
 }
-// changer le statut d'un utilisateur accepté à refusé
+/**
+ * modifie le statut d'utilisateur à refuse
+ *
+ * @param [string] $pseudo
+ * @return void
+ */
 function refuseUtilisateur($pseudo)
 {
     static $ps = null;
@@ -97,7 +180,7 @@ function refuseUtilisateur($pseudo)
     $reponse = false;
 
     try {
-         $ps->bindParam(":PSEUDO", $pseudo, PDO::PARAM_STR);
+        $ps->bindParam(":PSEUDO", $pseudo, PDO::PARAM_STR);
 
         $reponse = $ps->execute();
     } catch (PDOException $e) {
@@ -105,7 +188,12 @@ function refuseUtilisateur($pseudo)
     }
     return $reponse;
 }
-// changer le statut d'un utilisateur accepté à banni
+/**
+ * modifie le statut d'utilisateur à banni
+ *
+ * @param [string] $pseudo
+ * @return void
+ */
 function bannirUtilisateur($pseudo)
 {
     static $ps = null;
@@ -118,7 +206,7 @@ function bannirUtilisateur($pseudo)
     $reponse = false;
 
     try {
-         $ps->bindParam(":PSEUDO", $pseudo, PDO::PARAM_STR);
+        $ps->bindParam(":PSEUDO", $pseudo, PDO::PARAM_STR);
 
         $reponse = $ps->execute();
     } catch (PDOException $e) {
@@ -126,7 +214,12 @@ function bannirUtilisateur($pseudo)
     }
     return $reponse;
 }
-// changer le statut d'un utilisateur accepté à supprimé
+/**
+ * modifie le statut d'utilisateur à supprimer
+ *
+ * @param [string] $pseudo
+ * @return void
+ */
 function supprimerUtilisateur($pseudo)
 {
     static $ps = null;
@@ -139,7 +232,7 @@ function supprimerUtilisateur($pseudo)
     $reponse = false;
 
     try {
-         $ps->bindParam(":PSEUDO", $pseudo, PDO::PARAM_STR);
+        $ps->bindParam(":PSEUDO", $pseudo, PDO::PARAM_STR);
 
         $reponse = $ps->execute();
     } catch (PDOException $e) {
@@ -147,7 +240,11 @@ function supprimerUtilisateur($pseudo)
     }
     return $reponse;
 }
-//retourne tout les utilisateurs non vérifier
+/**
+ * retourne un tableau de tout les utilisateur qui ne sont pas vérifier
+ *
+ * @return array
+ */
 function infoNonVerifier()
 {
     static $ps = null;
@@ -167,11 +264,15 @@ function infoNonVerifier()
     }
     return $reponse;
 }
-//retourne tout les utilisateurs
+/**
+ * retourne un tableau de tout les utilisateur qui ne sont pas admins
+ *
+ * @return array
+ */
 function infoToutUtilisateur()
 {
     static $ps = null;
-    $sql = "SELECT pseudo,idUtilisateur from UTILISATEUR";
+    $sql = "SELECT pseudo,idUtilisateur from UTILISATEUR WHERE idStatut != 6";
 
     if ($ps == null) {
         $ps = connexionBDD()->prepare($sql);
@@ -186,7 +287,12 @@ function infoToutUtilisateur()
     }
     return $reponse;
 }
-//retourne un utilisateur
+/**
+ * retourne toute les information sur un utilisateur
+ *
+ * @param [string] $pseudo
+ * @return array
+ */
 function infoUtilisateur($pseudo)
 {
     static $ps = null;
@@ -198,7 +304,7 @@ function infoUtilisateur($pseudo)
     $reponse = false;
 
     try {
-        $ps->bindParam(":PSEUDO",$pseudo,PDO::PARAM_STR);
+        $ps->bindParam(":PSEUDO", $pseudo, PDO::PARAM_STR);
         if ($ps->execute())
             $reponse = $ps->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {

@@ -1,3 +1,37 @@
+<?php
+if (empty($_SESSION)) {
+    session_start();
+}
+require("./fonctionPHP/fonctionUtilisateur.php");
+require("./fonctionPHP/fonctionCommentaire.php");
+require("./fonctionPHP/fonctionJeux.php");
+if (isset($_POST['supCom'])) {
+    supprimerCommentaire($_POST['supCom']);
+}
+if (isset($_POST['supProfile'])) {
+    supprimerUtilisateur($_SESSION['nomLog']);
+    header('Location: deconnexion.php');
+}
+if (isset($_POST['passerPublic'])) {
+    passerJeuPublic($_POST['passerPublic']);
+}
+if (isset($_POST['changerProfile'])) {
+    $n_pseudo = htmlspecialchars($_POST["pseudo"],  ENT_NOQUOTES);
+    $n_mail = htmlspecialchars($_POST["mail"],  ENT_NOQUOTES);
+    $n_mdp = htmlspecialchars($_POST["mdp"],  ENT_NOQUOTES);
+    if($n_mdp!=""){
+        $n_mdp=hash('sha256',$n_mdp);
+    }
+    
+    if(!modifierUtilisateur($_SESSION['nomLog'],$n_pseudo, $n_mail, $n_mdp)){
+        echo 'Il y a eu une erreur lors de la modification du compte';
+    }
+    
+}
+$data = infoUtilisateur($_SESSION['nomLog']);
+$comms = voirCommentaireUtilisateur($_SESSION['nomLog']);
+$jeux = listeJeuxUtilisateur($_SESSION['nomLog']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,16 +47,76 @@
 <!-- Email,Pseudo,PhotoProfil -->
 
 <body>
-    <?php include("navbar.php");
-    require("./fonctionPHP/fonctionUtilisateur.php");
-    $data = infoUtilisateur($_SESSION['nomLog']) ?>
 
+    <?php include("navbar.php"); ?>
     <div class="container" id="pp">
         <img id="Picture" src="<?= $data[0]['photoDeProfil'] ?>" class="img-thumbnail" alt="...">
-        <p> Pseudo : <?= $data[0]["pseudo"]?></p>
-        <p> Email : <?= $data[0]["email"]?></p>
+        <p> Pseudo : <?= $data[0]["pseudo"] ?></p>
+        <p> Email : <?= $data[0]["email"] ?></p>
+        <form action="" method="POST">
+            <button type="submit" class="btn btn-danger" name="supProfile" value="oui">Supprimer ce profile</button>
+        </form>
     </div>
-    
+    <div class="container" id="pp">
+        <legend>Modifier son profil</legend>
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="mail">Nouveau Pseudo</label>
+                <input type="text" class="form-control" id="pseudo" name="pseudo" placeholder="Mon nouveau Pseudo">
+                <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+            </div>
+            <div class="form-group">
+                <label for="mail">Nouvelle Adresse Email</label>
+                <input type="email" class="form-control" id="mail" name="mail" aria-describedby="emailHelp" placeholder="mon nouveau Mail">
+                <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+            </div>
+            <div class="form-group">
+                <label for="mdp">Nouveau Mot de passe</label>
+                <input type="password" class="form-control" id="mdp" name="mdp" placeholder="Mon nouveau mot de passe">
+            </div>
+            <div class="form-group">
+                <button type="submit" name="changerProfile" class="btn btn-primary">Faire un demande de modification</button><br>
+            </div>
+        </form>
+    </div>
+    <div class="container" id="pp">
+        <form action="" method="post">
+            <legend>tout mes commentaires</legend>
+            <ul class="list-group">
+                <?php
+                for ($i = 0; $i < sizeof($comms); $i++) {
+                    echo ' <li class="list-group-item">
+               Jeux : ' . $comms[$i]['titre'] . '<br>
+               Date : ' . explode(' ', $comms[$i]["dateCommentaire"])[0] . '<br>
+               Commentaire : ' . $comms[$i]['commentaire'] . '<br>
+               <button type="submit" class="btn btn-primary" name="supCom" value="' . $comms[$i]['idCommentaire'] . '">Supprimer ce commentaire</button>
+               </li>
+               ';
+                }
+                ?>
+            </ul>
+        </form>
+    </div>
+    <div class="container" id="pp">
+        <form action="" method="post">
+            <legend>Liste de mes Jeux</legend>
+            <ul class="list-group">
+                <?php
+                for ($i = 0; $i < sizeof($jeux); $i++) {
+                    echo ' <li class="list-group-item">
+               Titre : ' . $jeux[$i]['titre'] . '<br>
+               <img id="testImg" class="card-img-top" src="' . $jeux[$i]['imageJeu'] . '" alt="Aucune image trouvé">
+               ';
+                    if ($jeux[$i]['public'] == false) {
+                        echo '
+                <button type="submit" class="btn btn-primary" name="passerPublic" value="' . $jeux[$i]['idJeu'] . '">Passer le jeu en public</button>
+                </li>
+                ';
+                    }
+                }
+                ?>
+        </form>
+    </div>
 </body>
 
 </html>
