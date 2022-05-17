@@ -1,99 +1,120 @@
-#navbarMain{
+#navbarMain {
     background-color: indigo !important;
 }
-#btnSearch{
+
+#btnSearch {
     color: yellow;
     outline-style: outset;
 }
-#btnSearch:hover{
-color: indigo;
-background-color: yellow;
+
+#btnSearch:hover {
+    color: indigo;
+    background-color: yellow;
 }
-#login{
+
+#login {
     margin-top: 10%;
     margin-left: 35%;
     margin-right: 35%;
     width: 30%;
 }
-#test{
+
+#test {
     /* background-color: aquamarine; */
     margin-left: 5%;
     margin-right: 5%;
     width: 90%;
 }
-#carte{
+
+#carte {
     margin: auto;
     margin-bottom: 2.5%;
     margin-top: 2.5%;
 }
-#pp{
+
+#pp {
     border: 2px solid rgb(0, 0, 0);
 }
-#info{
+
+#info {
     float: right;
 }
-#topique{
+
+#topique {
     margin-top: 3%;
     margin-right: 3%;
 }
-.imgP{
+
+.imgP {
     height: 50px;
     border-radius: 50%;
     float: right;
 }
-.form-control{
+
+.form-control {
     margin-bottom: 2.5% !important;
     margin-top: 2.5% !important;
-    
+
 }
-.creer{
+
+.creer {
     margin-top: 10% !important;
 }
-#Picture{
+
+#Picture {
     /* height: 1000px;
     width: 1000px; */
     max-width: 150px;
     max-height: 150px;
     border-radius: 50%;
 }
-#testImg{
+
+#testImg {
     max-width: 200px;
     max-height: 200px;
     vertical-align: middle;
     display: flex;
 }
-.imageJeu{
+
+.imageJeu {
     max-width: 500px;
 }
-#menu{
+
+#menu {
     /* margin-left: 20%; */
     padding-left: 20%;
     width: 100%;
 
 }
-#menuLogo{
+
+#menuLogo {
     height: 70%;
     width: 70%;
 }
-#navLogo{
+
+#navLogo {
     max-height: 30px;
 }
-#scrollTest{
+
+#scrollTest {
     height: 48rem !important;
     overflow-y: scroll;
     border: solid !important;
-    
+
 }
-#scrollComAdmin{
+
+#scrollComAdmin {
     height: 10rem !important;
     overflow-y: scroll;
     border: solid !important;
 }
-#carteRecherche{
+
+#carteRecherche {
     margin-left: 5%;
     margin-top: 2%;
 }
-#imgrecherche{
+
+#imgrecherche {
     max-height: 200;
     width: auto;
 }

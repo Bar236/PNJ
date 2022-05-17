@@ -49,7 +49,7 @@ if (isset($_POST['CreerJeu'])) {
             <input type="text" class="form-control" id="editeur" name="editeur" placeholder="ConcernedApe" required>
         </div>
         <div class="form-group">
-            <label for="dateSortie">dateSortie</label>
+            <label for="dateSortie">Date de sortie</label>
             <input type="date" class="form-control" id="dateSortie" name="dateSortie" required>
         </div>
 

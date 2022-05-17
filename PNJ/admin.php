@@ -6,7 +6,7 @@ if (isset($_POST['bannirUtilisateur'])) {
 } else if (isset($_POST['valider'])) {
     validerUtilisateur($_POST['valider']);
 } else if (isset($_POST['refuser'])) {
-    refuseUtilisateur($_POST['refuser']);
+    refuserUtilisateur($_POST['refuser']);
 } else if (isset($_POST['validerCom'])) {
     validerCommentaire($_POST['validerCom']);
 }

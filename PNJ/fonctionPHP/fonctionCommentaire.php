@@ -183,7 +183,7 @@ function voirCommentaireUtilisateur($pseudo)
 function supprimerCommentaire($idCommentaire)
 {
     static $ps = null;
-    $sql = "UPDATE COMMENTAIRE SET accepte = false ";
+    $sql = "DELETE FROM COMMENTAIRE ";
     $sql .= "WHERE idCommentaire = :IDCOM";
 
     if ($ps == null) {

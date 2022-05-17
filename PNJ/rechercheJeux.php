@@ -122,7 +122,7 @@ if (isset($_GET['recherche'])) {
                         </div>
                         <button type="submit" name="recherche" class="btn btn-primary">Rechercher</button>
                     </form>
-                    <button class="btn btn-primary" onclick="effacerForm()">Effacer</button>
+                    <button class="btn btn-primary" onclick="effacerRecherche()">Effacer</button>
                 </fieldset>
             </div>
         </div>

@@ -9,7 +9,7 @@ require_once("./bdd/connexionBdd.php");
  * @param [string] $prenom
  * @param [string] $nom
  * @param [string] $email
- * @param [tstringype] $photo
+ * @param [string] $photo
  * @return bool
  */
 function creerUtilisateur($pseudo, $mdp, $prenom, $nom, $email, $photo)
@@ -132,6 +132,8 @@ function connecterUtilisateur($email, $mdp)
                 $reponse = false;
             }
             //le compte existe mais soit il est pas vérifier , banni, refusé ,supprimé
+        }else{
+            $reponse = false;
         }
     }
     return $reponse;
@@ -168,7 +170,7 @@ function validerUtilisateur($pseudo)
  * @param [string] $pseudo
  * @return void
  */
-function refuseUtilisateur($pseudo)
+function refuserUtilisateur($pseudo)
 {
     static $ps = null;
     $sql = "UPDATE UTILISATEUR SET idStatut = 3 ";
@@ -272,7 +274,7 @@ function infoNonVerifier()
 function infoToutUtilisateur()
 {
     static $ps = null;
-    $sql = "SELECT pseudo,idUtilisateur from UTILISATEUR WHERE idStatut != 6";
+    $sql = "SELECT pseudo,idUtilisateur from UTILISATEUR WHERE idStatut = 2";
 
     if ($ps == null) {
         $ps = connexionBDD()->prepare($sql);

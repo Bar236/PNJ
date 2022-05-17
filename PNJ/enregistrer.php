@@ -41,7 +41,7 @@ if (isset($_POST['Creer'])) {
     <?php include("navbar.php") ?>
     <form action="#" method="post" class="creer" id="login" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="prenom">Prenom</label>
+            <label for="prenom">Prénom</label>
             <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Mike" required>
         </div>
         <div class="form-group">
