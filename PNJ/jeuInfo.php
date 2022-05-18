@@ -57,7 +57,7 @@ $test = dejaNote($_SESSION['nomLog'], $nomJeu);
         </header>
         <div class="p-5 mb-4 bg-light rounded-3">
             <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold"><?php echo ($nom) ?></h1>
+                <h1 class="display-5 fw-bold"><?php echo ($nomJeu) ?></h1>
                 <p class="col-md-8 fs-4">
                     <?= "développé par : " . $data[0]['editeur'] ?>
                 </p>
